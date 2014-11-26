@@ -1,3 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Formula1Client</string>
+    <string name="base_url">https://</string>
+    <string name="title_activity_drawer_main">Froma1client</string>
+
+    <string name="title_announcements">Announcements</string>
+    <string name="title_Teams">Teams</string>
+    <string name="title_season">Actual season</string>
+    <string name="title_login">Login</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="action_login">Login</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

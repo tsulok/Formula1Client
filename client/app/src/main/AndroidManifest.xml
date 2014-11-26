@@ -8,14 +8,22 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.tsulok.formula1client.LoginActivity"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:name="com.tsulok.formula1client.DrawerMainActivity"
+            android:label="@string/title_activity_drawer_main"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:configChanges="keyboard|orientation|layoutDirection">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
