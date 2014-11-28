@@ -1,24 +1,24 @@
 package com.tsulok.formula1client;
 
-import android.app.Activity;
-
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
+
+import com.tsulok.formula1client.helper.DataManager;
+import com.tsulok.formula1client.helper.UIHelper;
 
 
 public class DrawerMainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, LoginFragment.OnLoginListener{
 
+    private static DrawerMainActivity instance;
+    private DataManager dataManager;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -35,6 +35,10 @@ public class DrawerMainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_main);
 
+        App.initializeDummy();
+        dataManager = DataManager.getInstance();
+        instance = this;
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -46,15 +50,43 @@ public class DrawerMainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+        setSupportActionBar(mToolbar);
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+        NamedFragment fragment = null;
+        String tag = null;
+
+        switch (position){
+            case 1:
+                fragment = ListFragment.newInstance(R.string.title_announcements, dataManager.getAnnouncements());
+                tag = "Announcements";
+                break;
+            case 2:
+                fragment = ListFragment.newInstance(R.string.title_teams, dataManager.getTeamsAsList());
+                tag = "Teams";
+                break;
+            case 3:
+                fragment = ListFragment.newInstance(R.string.title_season, dataManager.getSeasons());
+                tag = "Seasons";
+                break;
+            case 4:
+                fragment = new LoginFragment();
+                tag = LoginFragment.TAG;
+                break;
+        }
+        if(fragment != null && tag != null){
+            clearBackStack();
+            pushFragment(fragment, tag);
+        } else {
+            UIHelper.showToast("Developer error happened");
+        }
+
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction()
+//                .replace(R.id.container, PlaceholderFragment.newInstance(a))
+//                .commit();
     }
 
     public void onSectionAttached(int number) {
@@ -63,7 +95,7 @@ public class DrawerMainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_announcements);
                 break;
             case 2:
-                mTitle = getString(R.string.title_Teams);
+                mTitle = getString(R.string.title_teams);
                 break;
             case 3:
                 mTitle = getString(R.string.title_season);
@@ -74,20 +106,55 @@ public class DrawerMainActivity extends ActionBarActivity
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+//        actionBar.setTitle(mTitle);
     }
 
-    public void pushFragment(NamedFragment fragment){
+    public void pushFragment(final NamedFragment fragment, String tag){
+        pushFragment(fragment, tag, false);
+    }
+
+    public void pushFragment(final NamedFragment fragment, String tag, boolean addToBackStack){
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
-        updateTitle(fragment.getTitleId());
+        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+
+        final int entryCount = fragmentManager.getBackStackEntryCount();
+
+        // find on the stack
+        boolean found = false;
+        if (tag != null) {
+            for (int i = 0; i < entryCount; i++) {
+                final FragmentManager.BackStackEntry entry = fragmentManager.getBackStackEntryAt(i);
+                final String name = entry.getName();
+                if (name == tag) {
+                    found = true;
+                    for (int j = entryCount; j > (i + 1); j--) {
+                        fragmentManager.popBackStack();
+                    }
+                }
+            }
+        }
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment);
+        if(addToBackStack){
+            showBack();
+            transaction.addToBackStack(tag);
+        }
+        transaction.commit();
+        mToolbar.post(new Runnable() {
+            @Override
+            public void run() {
+                updateTitle(fragment.getTitleId());
+            }
+        });
     }
 
     public void updateTitle(int titleId){
         getSupportActionBar().setTitle(titleId);
+    }
+
+    public void updateTitle(){
+        getSupportActionBar().setTitle(getActiveNamedFragment().getTitleId());
     }
 
     @Override
@@ -105,16 +172,66 @@ public class DrawerMainActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
+        if (mNavigationDrawerFragment.getmDrawerToggle().onOptionsItemSelected(item)) {
+            return true;
+        }
+
         switch (item.getItemId()){
-            case R.id.action_login:
-                pushFragment(new LoginFragment());
-                return true;
+            case android.R.id.home:
+                if (mNavigationDrawerFragment.getmDrawerToggle().isDrawerIndicatorEnabled()) {
+                    return mNavigationDrawerFragment.getmDrawerToggle().onOptionsItemSelected(item);
+                } else {
+                    this.onBackPressed();
+                    return true;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        updateBack();
+        updateTitle();
+    }
+
+    /**
+     * Gets the active fragment
+     * @return The active fragment.
+     */
+    public NamedFragment getActiveNamedFragment() {
+        if (this.getSupportFragmentManager().findFragmentById(R.id.container) instanceof NamedFragment) {
+            return (NamedFragment) this.getSupportFragmentManager().findFragmentById(R.id.container);
+        } else {
+            return null;
+        }
+    }
+
+    protected void updateBack() {
+        final FragmentManager fragmentManager = this.getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() <= 1) {
+            this.hideBack();
+        } else {
+            this.showBack();
+        }
+    }
+
+    protected void showBack() {
+        this.mNavigationDrawerFragment.setNavigationDrawerToogleEnable(false);
+    }
+
+    protected void hideBack() {
+        this.mNavigationDrawerFragment.setNavigationDrawerToogleEnable(true);
+    }
+
+    protected void clearBackStack() {
+        final FragmentManager fm = this.getSupportFragmentManager();
+        while (0 < fm.getBackStackEntryCount()) {
+            fm.popBackStackImmediate();
+        }
+        this.hideBack();
     }
 
     @Override
@@ -122,47 +239,11 @@ public class DrawerMainActivity extends ActionBarActivity
 
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_drawer_main, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((DrawerMainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-    }
-
     public Toolbar getmToolbar() {
         return mToolbar;
+    }
+
+    public static DrawerMainActivity getInstance() {
+        return instance;
     }
 }

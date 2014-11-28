@@ -17,8 +17,8 @@
             android:name="com.tsulok.formula1client.DrawerMainActivity"
             android:label="@string/title_activity_drawer_main"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateVisible"
-            android:configChanges="keyboard|orientation|layoutDirection">
+            android:configChanges="keyboard|orientation|layoutDirection"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

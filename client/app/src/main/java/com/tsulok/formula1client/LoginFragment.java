@@ -4,19 +4,16 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
-import android.app.Fragment;
+import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class LoginFragment extends NamedFragment {
+
+    public static String TAG = "LoginFagment";
 
     public interface  OnLoginListener {
         public void onLoginSucceeded(String username);
@@ -66,7 +63,7 @@ public class LoginFragment extends NamedFragment {
                 String password = mPasswordView.getText().toString().trim();
 
                 if(!validateErrors(username, password)){
-
+                    attemptRegister();
                 }
             }
         });
@@ -77,7 +74,7 @@ public class LoginFragment extends NamedFragment {
                 String password = mPasswordView.getText().toString().trim();
 
                 if(!validateErrors(username, password)){
-
+                    attemptLogin();
                 }
             }
         });
@@ -104,7 +101,19 @@ public class LoginFragment extends NamedFragment {
      * Attempts to sign in the account specified by the login form.
      */
     private void attemptLogin() {
+        showProgress(true);
+        CountDownTimer timer = new CountDownTimer(10000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
 
+            }
+
+            @Override
+            public void onFinish() {
+                showProgress(false);
+            }
+        };
+        timer.start();
     }
 
     /**

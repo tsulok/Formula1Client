@@ -6,11 +6,15 @@
     <string name="title_activity_drawer_main">Froma1client</string>
 
     <string name="title_announcements">Announcements</string>
-    <string name="title_Teams">Teams</string>
+    <string name="title_teams">Teams</string>
     <string name="title_season">Actual season</string>
     <string name="title_login">Login</string>
+    <string name="title_details">Details</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="lbl_next">Next</string>
+    <string name="lbl_previous">Previous</string>
 
     <string name="action_example">Example action</string>
     <string name="action_login">Login</string>
