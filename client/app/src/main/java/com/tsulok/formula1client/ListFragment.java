@@ -79,7 +79,7 @@ public class ListFragment extends NamedFragment {
     }
 
     @Override
-    protected int getTitleId() {
+    public int getTitleId() {
         return titleId;
     }
 

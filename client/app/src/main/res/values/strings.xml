@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Formula1Client</string>
-    <string name="base_url">https://</string>
+    <string name="base_url">https://forma1portal.azurewebsites.net/api/webapi/</string>
     <string name="title_activity_drawer_main">Froma1client</string>
 
     <string name="title_announcements">Announcements</string>
@@ -20,5 +20,9 @@
     <string name="action_login">Login</string>
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="alert_announcement_not_found">A hír nem található, fejlesztői hiba...</string>
+    <string name="alert_general_error">Sajnálatos hiba történt a lekérdezés során</string>
+    <string name="alert_success_but_error">Sikeres válasz érkezett de nem érvényes</string>
 
 </resources>

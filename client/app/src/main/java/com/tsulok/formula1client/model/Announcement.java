@@ -1,11 +1,37 @@
 package com.tsulok.formula1client.model;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.HashSet;
+
 public class Announcement extends IdentifiedModel {
 
+    @SerializedName("lead")
     private String lead;
+
+    @SerializedName("content")
     private String content;
+
+    @SerializedName("author")
     private String author;
+
+    @SerializedName("date")
     private String date;
+
+    @SerializedName("title")
+    private String title;
+
+    private HashSet<Integer> commentIds = new HashSet<Integer>();
+
+    public Announcement(int id, int id1, String lead, String content, String author, String date, String title) {
+        super(id);
+        id = id1;
+        this.lead = lead;
+        this.content = content;
+        this.author = author;
+        this.date = date;
+        this.title = title;
+    }
 
     public Announcement(int id, String lead, String content, String author, String date) {
         super(id);
@@ -13,6 +39,10 @@ public class Announcement extends IdentifiedModel {
         this.content = content;
         this.author = author;
         this.date = date;
+    }
+
+    public void addCommentId(int commentId){
+        commentIds.add(commentId);
     }
 
     public String getLead() {
@@ -45,5 +75,13 @@ public class Announcement extends IdentifiedModel {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public HashSet<Integer> getCommentIds() {
+        return commentIds;
     }
 }

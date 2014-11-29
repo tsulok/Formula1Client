@@ -56,6 +56,13 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter{
         this.fragments = fragments;
     }
 
+    public int getSelectedItemTitle(){
+        if(fragments != null) {
+            return getItem(getCurrentPosition()).getTitleId();
+        }
+        return 0;
+    }
+
     @Override
     public int getCount() {
         return fragments.size();

@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.tsulok.formula1client.helper.DataManager;
 import com.tsulok.formula1client.helper.UIHelper;
@@ -24,6 +26,8 @@ public class DrawerMainActivity extends ActionBarActivity
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private Toolbar mToolbar;
+    private ProgressBar progressBar;
+    private View containerView;
 
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -41,16 +45,31 @@ public class DrawerMainActivity extends ActionBarActivity
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
+        progressBar = (ProgressBar) findViewById(R.id.progress);
+        containerView = findViewById(R.id.mainContainer);
         mTitle = getTitle();
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        // Set up the drawer.
+        //Set up the drawer.
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         setSupportActionBar(mToolbar);
+
+        mToolbar.post(new Runnable() {
+            @Override
+            public void run() {
+                UIHelper.showProgress(true, progressBar, containerView);
+                loadInitialData(new IAction() {
+                    @Override
+                    public void doAction(Object... args) {
+                        UIHelper.hideProgress();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -60,7 +79,7 @@ public class DrawerMainActivity extends ActionBarActivity
 
         switch (position){
             case 1:
-                fragment = ListFragment.newInstance(R.string.title_announcements, dataManager.getAnnouncements());
+                fragment = ListFragment.newInstance(R.string.title_announcements, dataManager.getAnnouncementsAsList());
                 tag = "Announcements";
                 break;
             case 2:
@@ -237,6 +256,25 @@ public class DrawerMainActivity extends ActionBarActivity
     @Override
     public void onLoginSucceeded(String username) {
 
+    }
+
+    private void loadInitialData(final IAction action){
+        Api.getAnnouncements(new IAction() {
+            @Override
+            public void doAction(Object... args) {
+                Api.getDrivers(new IAction() {
+                    @Override
+                    public void doAction(Object... args) {
+                        Api.getTeams(new IAction() {
+                            @Override
+                            public void doAction(Object... args) {
+                                action.doAction();
+                            }
+                        });
+                    }
+                });
+            }
+        });
     }
 
     public Toolbar getmToolbar() {

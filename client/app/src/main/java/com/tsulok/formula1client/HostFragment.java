@@ -31,15 +31,6 @@ public class HostFragment extends NamedFragment {
         HostFragment hostFragment = new HostFragment();
         Bundle extras = new Bundle();
         extras.putSerializable(ARG_DATA, data);
-//        if(data instanceof Announcement){
-//            extras.putSerializable(ARG_DATA, DataManager.getInstance().getAnnouncements());
-//        } else if(data instanceof Team){
-//            extras.putSerializable(ARG_DATA, DataManager.getInstance().getTeamsAsList());
-//        } else if(data instanceof Season){
-//            extras.putSerializable(ARG_DATA, DataManager.getInstance().getSeasons());
-//        } else {
-//            extras.putSerializable(ARG_DATA, DataManager.getInstance().getAnnouncements());
-//        }
         extras.putInt(ARG_POSITION, selectedPosition);
         hostFragment.setArguments(extras);
         return hostFragment;
@@ -63,7 +54,7 @@ public class HostFragment extends NamedFragment {
         ArrayList<NamedFragment> fragments = new ArrayList<NamedFragment>();
         if(data != null){
             if(data instanceof Announcement){
-                for (Announcement a : DataManager.getInstance().getAnnouncements()) {
+                for (Announcement a : DataManager.getInstance().getAnnouncementsAsList()) {
                     fragments.add(DetailFragment.newInstance(a));
                 }
             } else if(data instanceof Team){
@@ -93,8 +84,8 @@ public class HostFragment extends NamedFragment {
     }
 
     @Override
-    protected int getTitleId() {
-        return R.string.app_name;
+    public int getTitleId() {
+        return pagerAdapter.getSelectedItemTitle();
     }
 
     @Override

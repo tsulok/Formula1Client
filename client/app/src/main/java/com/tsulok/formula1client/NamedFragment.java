@@ -43,6 +43,6 @@ public abstract class NamedFragment extends Fragment {
      */
     protected abstract void initEventHandlers();
 
-    protected abstract int getTitleId();
+    public abstract int getTitleId();
     protected abstract int getLayoutId();
 }

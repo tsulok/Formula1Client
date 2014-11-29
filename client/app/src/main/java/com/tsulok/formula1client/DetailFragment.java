@@ -61,7 +61,7 @@ public class DetailFragment extends NamedFragment {
     }
 
     @Override
-    protected int getTitleId() {
+    public int getTitleId() {
         return R.string.title_details;
     }
 
