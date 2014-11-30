@@ -18,6 +18,7 @@
     <string name="lbl_next">Next</string>
     <string name="lbl_previous">Previous</string>
 
+    <string name="action_comment">Comment</string>
     <string name="action_example">Example action</string>
     <string name="action_login">Login</string>
     <string name="action_settings">Settings</string>
@@ -27,5 +28,15 @@
     <string name="alert_announcement_not_found">A hír nem található, fejlesztői hiba...</string>
     <string name="alert_general_error">Sajnálatos hiba történt a lekérdezés során</string>
     <string name="alert_success_but_error">Sikeres válasz érkezett de nem érvényes</string>
+
+    <string name="dialog_new_comment">New comment</string>
+    <string name="dialog_send">Send</string>
+    <string name="dialog_cancel">Cancel</string>
+
+    <string name="dialog_succes">Successfull comment</string>
+    <string name="succes_register">Successfull register</string>
+    <string name="unsuccess_register">Unsuccessfull register, try again</string>
+    <string name="success_login">Successfull login</string>
+    <string name="unsuccess_login">Unsuccessfull login, check credentials</string>
 
 </resources>

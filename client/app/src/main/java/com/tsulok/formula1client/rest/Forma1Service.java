@@ -3,12 +3,13 @@ package com.tsulok.formula1client.rest;
 import com.tsulok.formula1client.model.BasicAnswer;
 import com.tsulok.formula1client.rest.container.AnnouncementContainer;
 import com.tsulok.formula1client.rest.container.CommentContainer;
+import com.tsulok.formula1client.rest.container.CommentPostContainer;
 import com.tsulok.formula1client.rest.container.DriverContainer;
 import com.tsulok.formula1client.rest.container.SeasonContainer;
 import com.tsulok.formula1client.rest.container.TeamContainer;
 
 import retrofit.Callback;
-import retrofit.http.Field;
+import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Query;
@@ -31,9 +32,7 @@ public interface Forma1Service {
     void getComment(@Query("announcementId")int announcementId, Callback<CommentContainer> cb);
 
     @POST("/addComment")
-    void comment(@Field("comment") String comment,
-                 @Field("username") String username,
-                 @Field("announcementId") String announcementId,
+    void comment(@Body CommentPostContainer body,
                  Callback<BasicAnswer> cb);
 
     @GET("/getTeams")

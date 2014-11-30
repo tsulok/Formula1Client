@@ -7,6 +7,7 @@ import com.tsulok.formula1client.model.User;
 import com.tsulok.formula1client.rest.MyCallback;
 import com.tsulok.formula1client.rest.container.AnnouncementContainer;
 import com.tsulok.formula1client.rest.container.CommentContainer;
+import com.tsulok.formula1client.rest.container.CommentPostContainer;
 import com.tsulok.formula1client.rest.container.DriverContainer;
 import com.tsulok.formula1client.rest.container.TeamContainer;
 
@@ -18,7 +19,9 @@ public class Api {
         App.getService().login(username, password, new MyCallback<BasicAnswer>() {
             @Override
             public void success(BasicAnswer basicAnswer, Response response) {
-                if (!isAnswerValid(basicAnswer)) {
+                if(basicAnswer == null || !basicAnswer.isSuccess()){
+                    UIHelper.showToast(R.string.unsuccess_login);
+                    UIHelper.hideProgress();
                     return;
                 }
 
@@ -32,7 +35,12 @@ public class Api {
         App.getService().register(username, password, new MyCallback<BasicAnswer>() {
             @Override
             public void success(BasicAnswer basicAnswer, Response response) {
-                if(!isAnswerValid(basicAnswer)){
+                if(basicAnswer == null){
+                    isAnswerValid(basicAnswer);
+                    return;
+                }else if(!basicAnswer.isSuccess()){
+                    UIHelper.showToast(basicAnswer.getErrorMessage());
+                    UIHelper.hideProgress();
                     return;
                 }
 
@@ -73,6 +81,20 @@ public class Api {
         });
     }
 
+    public static void sendComment(int announcementId, String message, String username, final IAction action){
+        App.getService().comment(new CommentPostContainer(username, message, announcementId), new MyCallback<BasicAnswer>() {
+            @Override
+            public void success(BasicAnswer basicAnswer, Response response) {
+                if(!isAnswerValid(basicAnswer)){
+                    return;
+                }
+
+                UIHelper.showToast(R.string.dialog_succes);
+                action.doAction();
+            }
+        });
+    }
+
     public static void getTeams(final IAction action){
         App.getService().teams(new MyCallback<TeamContainer>() {
             @Override
@@ -104,6 +126,7 @@ public class Api {
     public static boolean isAnswerValid(BasicAnswer answer){
         if(answer == null || !answer.isSuccess()){
             UIHelper.showToast(R.string.alert_success_but_error);
+            UIHelper.hideProgress();
             return false;
         } else {
             return true;

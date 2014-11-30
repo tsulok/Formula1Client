@@ -20,8 +20,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
-;
+;import com.tsulok.formula1client.helper.DataManager;
+import com.tsulok.formula1client.model.User;
 
 public class NavigationDrawerFragment extends Fragment {
 
@@ -49,6 +51,8 @@ public class NavigationDrawerFragment extends Fragment {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerListView;
     private View mFragmentContainerView;
+
+    private TextView userNameView;
 
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
@@ -100,7 +104,7 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         View headerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_menu_header, null);
-
+        userNameView = (TextView) headerView.findViewById(R.id.header_username);
         mDrawerListView.addHeaderView(headerView, null, false);
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 App.getAppContext(),
@@ -301,5 +305,12 @@ public class NavigationDrawerFragment extends Fragment {
 
     public void setNavigationDrawerToogleEnable(boolean isEnabled){
         mDrawerToggle.setDrawerIndicatorEnabled(isEnabled);
+    }
+
+    public void updateUserName(){
+        User user = DataManager.getInstance().getCurrentUser();
+        if(user != null){
+            userNameView.setText(user.getUsername());
+        }
     }
 }

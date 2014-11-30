@@ -287,4 +287,8 @@ public class DrawerMainActivity extends ActionBarActivity
     public static DrawerMainActivity getInstance() {
         return instance;
     }
+
+    public void updateUser(){
+        mNavigationDrawerFragment.updateUserName();
+    }
 }

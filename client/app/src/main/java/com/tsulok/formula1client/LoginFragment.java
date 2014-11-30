@@ -1,13 +1,14 @@
 package com.tsulok.formula1client;
 
 import android.app.Activity;
-import android.os.CountDownTimer;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.tsulok.formula1client.helper.DataManager;
 import com.tsulok.formula1client.helper.UIHelper;
+import com.tsulok.formula1client.model.User;
 
 public class LoginFragment extends NamedFragment {
 
@@ -61,7 +62,7 @@ public class LoginFragment extends NamedFragment {
                 String password = mPasswordView.getText().toString().trim();
 
                 if(!validateErrors(username, password)){
-                    attemptRegister();
+                    attemptRegister(username, password);
                 }
             }
         });
@@ -72,7 +73,7 @@ public class LoginFragment extends NamedFragment {
                 String password = mPasswordView.getText().toString().trim();
 
                 if(!validateErrors(username, password)){
-                    attemptLogin();
+                    attemptLogin(username, password);
                 }
             }
         });
@@ -98,29 +99,31 @@ public class LoginFragment extends NamedFragment {
     /**
      * Attempts to sign in the account specified by the login form.
      */
-    private void attemptLogin() {
-//        showProgress(true);
+    private void attemptLogin(final String username, String password) {
         UIHelper.showProgress(true, mProgressView, mLoginFormView);
-        CountDownTimer timer = new CountDownTimer(10000, 1000) {
+        Api.login(username, password, new IAction() {
             @Override
-            public void onTick(long millisUntilFinished) {
-
+            public void doAction(Object... args) {
+                DataManager.getInstance().setCurrentUser(new User(username));
+                UIHelper.showToast(R.string.success_login);
+                UIHelper.hideProgress();
+                ((DrawerMainActivity)(getActivity())).updateUser();
             }
-
-            @Override
-            public void onFinish() {
-//                showProgress(false);
-                UIHelper.showProgress(false, mProgressView, mLoginFormView);
-            }
-        };
-        timer.start();
+        });
     }
 
     /**
      * Attempts to register the account specified by the login form.
      */
-    private void attemptRegister() {
-
+    private void attemptRegister(String username, String password) {
+        UIHelper.showProgress(true, mProgressView, mLoginFormView);
+        Api.register(username, password, new IAction() {
+            @Override
+            public void doAction(Object... args) {
+                UIHelper.showToast(R.string.succes_register);
+                UIHelper.hideProgress();
+            }
+        });
     }
 
     /**
@@ -165,46 +168,10 @@ public class LoginFragment extends NamedFragment {
     }
 
     private boolean isEmailValid(String email) {
-        return email.length() > 3;
+        return email.length() >= 3;
     }
 
     private boolean isPasswordValid(String password) {
         return password.length() >= 6;
     }
-
-//    /**
-//     * Shows the progress UI and hides the login form.
-//     */
-//    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-//    public void showProgress(final boolean show) {
-//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-//        // for very easy animations. If available, use these APIs to fade-in
-//        // the progress spinner.
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-//            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-//
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//                }
-//            });
-//
-//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//            mProgressView.animate().setDuration(shortAnimTime).alpha(
-//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//                }
-//            });
-//        } else {
-//            // The ViewPropertyAnimator APIs are not available, so simply show
-//            // and hide the relevant UI components.
-//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-//        }
-//    }
 }
