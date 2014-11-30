@@ -3,6 +3,8 @@
 
     <string name="app_name">Formula1Client</string>
     <string name="base_url">https://forma1portal.azurewebsites.net/api/webapi/</string>
+    <string name="announcement_url">https://forma1portal.azurewebsites.net/Announcement/Details/</string>
+    <string name="share_subject">Ádám &amp; Dávid ezt a cikket javasolja neked:</string>
     <string name="title_activity_drawer_main">Froma1client</string>
     <string name="facebook_app_id">735510226517404</string>
     <string name="facebook_pswd">my_facebook_pswd</string>
@@ -20,6 +22,7 @@
     <string name="lbl_next">Next</string>
     <string name="lbl_previous">Previous</string>
 
+    <string name="action_share">Share</string>
     <string name="action_comment">Comment</string>
     <string name="action_example">Example action</string>
     <string name="action_login">Login</string>

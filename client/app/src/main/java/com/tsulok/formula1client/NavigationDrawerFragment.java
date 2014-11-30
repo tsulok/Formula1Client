@@ -113,7 +113,7 @@ public class NavigationDrawerFragment extends Fragment {
                 new String[]{
                         getString(R.string.title_announcements),
                         getString(R.string.title_teams),
-                        getString(R.string.title_season),
+//                        getString(R.string.title_season),
                         getString(R.string.title_login)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);

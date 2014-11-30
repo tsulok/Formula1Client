@@ -1,9 +1,13 @@
 package com.tsulok.formula1client;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,6 +44,33 @@ public class AnnouncementFragment extends NamedFragment {
 
     public AnnouncementFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.announcement_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                Intent share = new Intent(android.content.Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_subject));
+                share.putExtra(Intent.EXTRA_TEXT, getString(R.string.announcement_url) + announcement.getId());
+
+                startActivity(Intent.createChooser(share, "Share link!"));
+                return true;
+            default:
+                return true;
+        }
     }
 
     @Override

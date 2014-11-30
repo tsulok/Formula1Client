@@ -98,11 +98,11 @@ public class DrawerMainActivity extends ActionBarActivity
                 fragment = ListFragment.newInstance(R.string.title_teams, dataManager.getTeamsAsList());
                 tag = "Teams";
                 break;
+//            case 3:
+//                fragment = ListFragment.newInstance(R.string.title_season, dataManager.getSeasons());
+//                tag = "Seasons";
+//                break;
             case 3:
-                fragment = ListFragment.newInstance(R.string.title_season, dataManager.getSeasons());
-                tag = "Seasons";
-                break;
-            case 4:
                 fragment = new LoginFragment();
                 tag = LoginFragment.TAG;
                 break;
