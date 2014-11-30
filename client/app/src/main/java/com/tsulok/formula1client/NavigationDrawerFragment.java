@@ -313,4 +313,8 @@ public class NavigationDrawerFragment extends Fragment {
             userNameView.setText(user.getUsername());
         }
     }
+
+    public void selectFirstItem(){
+        mDrawerListView.setItemChecked(1, true);
+    }
 }

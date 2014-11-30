@@ -4,6 +4,8 @@
     <string name="app_name">Formula1Client</string>
     <string name="base_url">https://forma1portal.azurewebsites.net/api/webapi/</string>
     <string name="title_activity_drawer_main">Froma1client</string>
+    <string name="facebook_app_id">735510226517404</string>
+    <string name="facebook_pswd">my_facebook_pswd</string>
 
     <string name="title_announcements">Announcements</string>
     <string name="title_announcement">Announcement</string>

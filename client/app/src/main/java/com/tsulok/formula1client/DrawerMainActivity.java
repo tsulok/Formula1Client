@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.facebook.Session;
 import com.tsulok.formula1client.helper.DataManager;
 import com.tsulok.formula1client.helper.UIHelper;
 
@@ -71,6 +72,14 @@ public class DrawerMainActivity extends ActionBarActivity
                                 "Announcements");
                     }
                 });
+                if (Session.getActiveSession() != null) {
+                    Session.getActiveSession().closeAndClearTokenInformation();
+                } else {
+                    Session session = Session.openActiveSessionFromCache(DrawerMainActivity.this);
+                    if(session != null){
+                        session.closeAndClearTokenInformation();
+                    }
+                }
             }
         });
     }
@@ -257,8 +266,18 @@ public class DrawerMainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onLoginSucceeded(String username) {
+    protected void onDestroy() {
+        super.onDestroy();
+        if (Session.getActiveSession() != null) {
+            Session.getActiveSession().closeAndClearTokenInformation();
+        }
+    }
 
+    @Override
+    public void onLoginSucceeded() {
+        updateUser();
+        onNavigationDrawerItemSelected(1);
+        mNavigationDrawerFragment.selectFirstItem();
     }
 
     private void loadInitialData(final IAction action){

@@ -63,12 +63,17 @@ public class AnnouncementFragment extends NamedFragment {
 
 //                contentView.setText(Html.fromHtml(announcement.getContent()));
                 URLImageParser p = new URLImageParser(contentView, getActivity());
-                Spanned htmlSpan = Html.fromHtml(announcement.getContent(), p, null);
+                String trickedImg = replaceContentImage(announcement.getContent());
+                Spanned htmlSpan = Html.fromHtml(trickedImg, p, null);
                 contentView.setText(htmlSpan);
             } else {
                 UIHelper.showToast(R.string.alert_developer);
             }
         }
+    }
+
+    private String replaceContentImage(String content){
+        return content.replace("<img","<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><img ");
     }
 
     @Override
