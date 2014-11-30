@@ -45,4 +45,8 @@ public abstract class NamedFragment extends Fragment {
 
     public abstract int getTitleId();
     protected abstract int getLayoutId();
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+    }
 }

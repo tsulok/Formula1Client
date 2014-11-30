@@ -2,19 +2,19 @@ package com.tsulok.formula1client.model;
 
 public class Comment extends IdentifiedModel {
 
-    private String comment;
+    private String content;
     private String author;
     private String date;
 
     public Comment(int id, String comment, String author, String date) {
         super(id);
-        this.comment = comment;
+        this.content = comment;
         this.author = author;
         this.date = date;
     }
 
     public String getComment() {
-        return comment;
+        return content;
     }
 
     public String getAuthor() {

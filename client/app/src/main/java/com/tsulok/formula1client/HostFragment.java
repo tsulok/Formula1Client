@@ -55,7 +55,7 @@ public class HostFragment extends NamedFragment {
         if(data != null){
             if(data instanceof Announcement){
                 for (Announcement a : DataManager.getInstance().getAnnouncementsAsList()) {
-                    fragments.add(DetailFragment.newInstance(a));
+                    fragments.add(AnnouncementFragment.newInstance(a.getId()));
                 }
             } else if(data instanceof Team){
                 for (Team t : DataManager.getInstance().getTeamsAsList()) {

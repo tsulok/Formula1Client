@@ -11,5 +11,6 @@ public abstract class MyCallback<T> implements Callback<T>{
     @Override
     public void failure(RetrofitError error) {
         UIHelper.showToast(R.string.alert_general_error);
+        UIHelper.hideProgress();
     }
 }

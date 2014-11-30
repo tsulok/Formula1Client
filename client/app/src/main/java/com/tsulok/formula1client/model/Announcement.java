@@ -42,6 +42,9 @@ public class Announcement extends IdentifiedModel {
     }
 
     public void addCommentId(int commentId){
+        if(commentIds == null){
+            commentIds = new HashSet<Integer>();
+        }
         commentIds.add(commentId);
     }
 

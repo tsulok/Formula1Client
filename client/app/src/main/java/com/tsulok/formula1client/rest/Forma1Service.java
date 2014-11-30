@@ -11,21 +11,24 @@ import retrofit.Callback;
 import retrofit.http.Field;
 import retrofit.http.GET;
 import retrofit.http.POST;
-import retrofit.http.Path;
+import retrofit.http.Query;
 
 public interface Forma1Service {
 
-    @GET("/register?username={username}&password={password}")
-    void register(@Path("username")String username, @Path("password")String password, Callback<BasicAnswer> cb);
+    @GET("/register")
+    void register(@Query("username")String username, @Query("password")String password, Callback<BasicAnswer> cb);
 
-    @GET("/login?username={username}&password={password}")
-    void login(@Path("username")String username, @Path("password")String password, Callback<BasicAnswer> cb);
+    @GET("/login")
+    void login(@Query("username")String username, @Query("password")String password, Callback<BasicAnswer> cb);
 
     @GET("/getAnnouncements")
     void announcements(Callback<AnnouncementContainer> cb);
 
-    @GET("/getComment?announcementId={id}")
-    void getComment(@Path("id")String announcementId, Callback<CommentContainer> cb);
+//    @GET("/getComment?announcementId={id}")
+//    void getComment(@Path("id")String announcementId, Callback<CommentContainer> cb);
+
+    @GET("/getComment")
+    void getComment(@Query("announcementId")int announcementId, Callback<CommentContainer> cb);
 
     @POST("/addComment")
     void comment(@Field("comment") String comment,
@@ -39,6 +42,6 @@ public interface Forma1Service {
     @GET("/getDrivers")
     void drivers(Callback<DriverContainer> cb);
 
-    @GET("/getSeason?year={year}")
-    void season(@Path("year") int year, Callback<SeasonContainer> cb);
+    @GET("/getSeason")
+    void season(@Query("year") int year, Callback<SeasonContainer> cb);
 }

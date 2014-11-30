@@ -12,7 +12,7 @@ import com.tsulok.formula1client.helper.Helper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyPagerAdapter extends FragmentStatePagerAdapter{
+public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
     protected List<NamedFragment> fragments;
     private ViewPager pager;

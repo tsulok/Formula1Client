@@ -58,7 +58,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         if(data.get(position) instanceof Announcement){
             Announcement a = (Announcement)data.get(position);
-            viewHolder.textView.setText(a.getContent());
+            viewHolder.textView.setText(a.getTitle());
         } else if(data.get(position) instanceof Team){
             Team team = (Team)data.get(position);
             viewHolder.textView.setText(team.getName());

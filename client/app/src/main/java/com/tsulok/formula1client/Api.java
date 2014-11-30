@@ -56,7 +56,7 @@ public class Api {
     }
 
     public static void getComments(final int announcementId, final IAction action){
-        App.getService().getComment(Integer.toString(announcementId), new MyCallback<CommentContainer>() {
+        App.getService().getComment(announcementId, new MyCallback<CommentContainer>() {
             @Override
             public void success(CommentContainer commentContainer, Response response) {
                 if(!isAnswerValid(commentContainer)){
@@ -68,7 +68,7 @@ public class Api {
                 } else {
                     DataManager.getInstance().initComments(commentContainer);
                 }
-                action.doAction();
+                action.doAction(commentContainer);
             }
         });
     }

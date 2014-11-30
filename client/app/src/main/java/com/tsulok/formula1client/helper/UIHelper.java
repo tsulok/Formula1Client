@@ -26,6 +26,10 @@ public class UIHelper {
         showToast(Helper.getStringRes(messageId));
     }
 
+    public static void showProgress(boolean show, View container){
+        showProgress(show, actualProgress, container);
+    }
+
     /**
      * Shows the progress UI and hides the login form.
      */
@@ -67,6 +71,5 @@ public class UIHelper {
     public static void hideProgress(){
         showProgress(false, actualProgress, actualContainer);
         actualContainer = null;
-        actualProgress = null;
     }
 }

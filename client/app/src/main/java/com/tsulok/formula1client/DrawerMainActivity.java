@@ -66,6 +66,9 @@ public class DrawerMainActivity extends ActionBarActivity
                     @Override
                     public void doAction(Object... args) {
                         UIHelper.hideProgress();
+                        pushFragment(ListFragment.newInstance(
+                                R.string.title_announcements, dataManager.getAnnouncementsAsList()),
+                                "Announcements");
                     }
                 });
             }
@@ -230,7 +233,7 @@ public class DrawerMainActivity extends ActionBarActivity
 
     protected void updateBack() {
         final FragmentManager fragmentManager = this.getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() <= 1) {
+        if (fragmentManager.getBackStackEntryCount() < 1) {
             this.hideBack();
         } else {
             this.showBack();
